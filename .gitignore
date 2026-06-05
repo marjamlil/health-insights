@@ -18,3 +18,9 @@ dist/
 
 # macOS
 .DS_Store
+
+# Xcode (project is generated from ios/project.yml)
+ios/HealthInsights.xcodeproj/
+ios/**/*.entitlements
+ios/**/Info.plist
+DerivedData/
