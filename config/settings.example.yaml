@@ -1,0 +1,66 @@
+# Health Insights Configuration
+# Copy to settings.yaml and personalise:
+#   cp config/settings.example.yaml config/settings.yaml
+
+# User profile
+user:
+  name: "Your Name"
+  data_start_date: "2024-01-01"  # ignore HealthKit records before this date
+
+# Optional targets (uncomment and set values to enable target lines in reports)
+targets:
+  # vo2_max: 50
+  # resting_hr: 55
+  # weekly_training_hours: 6
+  # sleep_duration: 7.5
+
+# HR zones (percentage of max HR)
+# Default estimates max HR as 220 - age if max_hr not set
+hr_zones:
+  # max_hr: 185  # Uncomment and set your actual max HR
+  zone1: [0.50, 0.60]  # Recovery
+  zone2: [0.60, 0.70]  # Aerobic base
+  zone3: [0.70, 0.80]  # Tempo
+  zone4: [0.80, 0.90]  # Threshold
+  zone5: [0.90, 1.00]  # VO2 max
+
+# Baseline calculation
+baselines:
+  rolling_window_days: 30
+  min_data_points: 7
+
+# Anomaly detection (conservative thresholds to avoid alert fatigue)
+anomaly_detection:
+  resting_hr_std_threshold: 2.0
+  hrv_drop_threshold: 0.15  # 15% drop
+  hrv_consecutive_days: 3
+  sleep_efficiency_threshold: 0.75
+  sleep_consecutive_nights: 5
+  vo2_decline_threshold: 2.0
+  vo2_decline_window_days: 30
+
+# Report scheduling (used by `health-report schedule-info`)
+schedule:
+  weekly_day: "Monday"
+  weekly_time: "07:00"
+  monthly_day: 1
+  monthly_time: "07:00"
+
+# Population norms (for context display in reports)
+population_norms:
+  resting_hr:
+    excellent: [40, 54]
+    good: [55, 61]
+    average: [62, 69]
+    below_average: [70, 80]
+  hrv_ms:  # SDNN for adults
+    excellent: [70, 150]
+    good: [50, 70]
+    average: [30, 50]
+    below_average: [0, 30]
+  vo2_max_male_30_39:
+    superior: [52, 99]
+    excellent: [46, 51]
+    good: [42, 45]
+    fair: [36, 41]
+    poor: [0, 35]

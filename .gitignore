@@ -1,0 +1,20 @@
+# Personal configuration (copy settings.example.yaml to create yours)
+config/settings.yaml
+
+# Personal health data — never commit
+data/
+exports/
+reports/
+
+# Python
+venv/
+.venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+.pytest_cache/
+
+# macOS
+.DS_Store
