@@ -18,6 +18,9 @@ targets:
     type: application
     platform: iOS
     sources: [HealthInsights]
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.marklilburn.healthinsights
     entitlements:
       path: HealthInsights/HealthInsights.entitlements
       properties:
