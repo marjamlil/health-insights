@@ -1,6 +1,8 @@
 # Health Insights
 
-Turns your Apple HealthKit export into the kind of weekly and monthly PDF reports a coach would write: training load, recovery readiness, sleep debt, and anomaly flags — computed locally, no cloud, no subscription.
+[![iOS build](https://github.com/marjamlil/health-insights/actions/workflows/ios-build.yml/badge.svg)](https://github.com/marjamlil/health-insights/actions/workflows/ios-build.yml)
+
+Turns your Apple HealthKit export into the kind of weekly and monthly PDF reports a coach would write: training load, recovery readiness, sleep debt, and anomaly flags — computed locally, no cloud, no subscription. Plus an iOS companion app that scores your readiness live each morning.
 
 ![Sample weekly report](docs/sample-weekly.png)
 
@@ -82,6 +84,24 @@ pytest
 
 `config/settings.yaml` (copy from `settings.example.yaml`) controls targets, HR zones (set your real max HR if you know it; otherwise Tanaka's 208 − 0.7×age estimate is used), baseline windows, and anomaly thresholds. The defaults are deliberately conservative — an anomaly flag should mean something.
 
+## iOS companion app (`ios/`)
+
+The readiness engine also runs live on-device: a SwiftUI app that reads HRV and resting HR from HealthKit, recomputes your readiness when overnight data syncs, fires a local notification ("Readiness 38 — Recovery day"), and shows the score on a home-screen widget. iPhone notifications mirror to Apple Watch automatically.
+
+- `ReadinessEngine.swift` is a line-for-line port of `calculate_readiness_score` in `src/metrics.py` — same z-score maths, same thresholds
+- All processing is on-device; the app has no network access
+- The Xcode project is generated from `ios/project.yml` with [XcodeGen](https://github.com/yonaskolb/XcodeGen) and built unsigned for the iOS Simulator — no Apple Developer account needed to build or run it
+- CI builds the app and widget on every push (badge above)
+
+```bash
+cd ios
+xcodegen generate
+xcodebuild build -project HealthInsights.xcodeproj -scheme HealthInsights \
+  -destination 'generic/platform=iOS Simulator' CODE_SIGNING_ALLOWED=NO
+```
+
+To run on a real iPhone, open the project in Xcode and sign with a free Apple ID (7-day provisioning) or a paid developer account.
+
 ## Stack
 
-Python 3.11 · pandas · numpy · matplotlib · reportlab · click · pytest
+Python 3.11 · pandas · numpy · matplotlib · reportlab · click · pytest · Swift/SwiftUI · HealthKit · WidgetKit · XcodeGen · GitHub Actions
